@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/bash
 # 查找脚本所在路径，并进入
 #DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 DIR=$PWD
@@ -21,13 +21,12 @@ config=ssd_mobilenet_v1_pets.config
 pipeline_config_path=$output_dir/$config
 
 # 先清空输出目录，本地运行会有效果，tinymind上运行这一行没有任何效果
-# This is redundant on tinymind.
-#rm -rvf $output_dir/*   
+# tinymind已经支持引用上一次的运行结果，这一行需要删掉，不然会出现上一次的运行结果被清空的状况。
+# This is redundant on tinymind. Because every execution has a new directory.  
+# rm -rvf $output_dir/*
 
 # 因为dataset里面的东西是不允许修改的，所以这里要把config文件复制一份到输出目录
-#cp $DIR/$config $pipeline_config_path
-# change $DIR into $output_dir. And the format of the command
-cp $pipeline_config_path $output_dir/$config
+cp $DIR/$config $pipeline_config_path
 
 for i in {0..4}  # for循环中的代码执行5此，这里的左右边界都包含，也就是一共训练500个step，每100step验证一次
 do
